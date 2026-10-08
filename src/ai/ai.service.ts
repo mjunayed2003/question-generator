@@ -1,12 +1,15 @@
-import { Injectable } from '@nestjs/common';
-import { MockProvider } from './provider/mock.provider.js';
+import { Inject, Injectable } from '@nestjs/common';
+import { AI_PROVIDER, type AIProvider } from './interface/ai-provider.interface.js';
 import { GenerateQuestionsDto } from './dto/generate-questions.dto.js';
 
 @Injectable()
 export class AiService {
-    private readonly provider = new MockProvider();
-    async genarateQuestions(input: GenerateQuestionsDto){
-        return this.provider.generateQuestions(input);
-    }
+  constructor(
+    @Inject(AI_PROVIDER)
+    private readonly provider: AIProvider,
+  ) {}
 
+  async genarateQuestions(input: GenerateQuestionsDto) {
+    return this.provider.generateQuestions(input);
+  }
 }
